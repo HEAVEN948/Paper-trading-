@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PaperLog — Mi Trading Journal</title>
+<meta name="theme-color" content="#0B1E3F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy-deep:#071630;
+    --blue:#2E5EFF;
+    --orange:#FF7A29;
+    --green:#1FAE6E;
+    --red:#E5484D;
+    --cream:#F5F7FB;
+    --card:#FFFFFF;
+    --line:#E4E8F1;
+    --text:#101828;
+    --muted:#64748B;
+    --font-display:'Poppins',sans-serif;
+    --font-body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  a{color:inherit}
+
+  /* Header */
+  header{
+    background:linear-gradient(160deg,var(--navy) 0%, var(--navy-deep) 100%);
+    color:#fff;
+    padding:22px 18px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:160px; height:160px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,122,41,0.25), transparent 70%);
+  }
+  .brand-row{
+    display:flex; align-items:center; gap:12px;
+    position:relative; z-index:1;
+  }
+  .logo{
+    width:44px; height:44px;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--blue), var(--orange));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:19px;
+    color:#fff;
+    flex-shrink:0;
+    box-shadow:0 6px 16px rgba(46,94,255,0.35);
+  }
+  .brand-text h1{
+    font-family:var(--font-display);
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:0.2px;
+  }
+  .brand-text p{
+    font-size:11.5px;
+    color:rgba(255,255,255,0.6);
+    margin-top:1px;
+  }
+  #installBtn{
+    margin-left:auto;
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:12.5px;
+    padding:9px 14px;
+    border-radius:10px;
+    display:none;
+    align-items:center;
+    gap:6px;
+    box-shadow:0 4px 12px rgba(255,122,41,0.4);
+    cursor:pointer;
+    z-index:1;
+    position:relative;
+  }
+  #installBtn.show{display:inline-flex}
+  #installBtn:active{transform:scale(0.97)}
+
+  /* Summary strip */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:20px;
+    position:relative; z-index:1;
+  }
+  .sum-card{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .sum-card .val{
+    font-family:var(--font-display);
+    font-size:15px;
+    font-weight:700;
+  }
+  .sum-card .lbl{
+    font-size:9.5px;
+    color:rgba(255,255,255,0.6);
+    margin-top:2px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
+  .val.pos{color:#5FE3A1}
+  .val.neg{color:#FF8B8E}
+
+  /* Main */
+  main{
+    max-width:520px;
+    margin:0 auto;
+    padding:18px 16px;
+  }
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 1px 3px rgba(16,24,40,0.04);
+  }
+  .panel h2{
+    font-family:var(--font-display);
+    font-size:14px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .type-toggle{
+    display:flex;
+    background:var(--cream);
+    border-radius:10px;
+    padding:3px;
+    margin-bottom:14px;
+    border:1px solid var(--line);
+  }
+  .type-toggle button{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:9px 0;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:12.5px;
+    color:var(--muted);
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .type-toggle button.active{
+    background:var(--navy);
+    color:#fff;
+  }
+
+  .field{margin-bottom:12px;}
+  .field label{
+    display:block;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:5px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .field input{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:11px 12px;
+    font-size:14.5px;
+    font-family:var(--font-body);
+    color:var(--text);
+    background:#fff;
+  }
+  .field input:focus{
+    outline:none;
+    border-color:var(--blue);
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .preview{
+    background:var(--cream);
+    border-radius:10px;
+    padding:11px 13px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .preview strong{
+    font-family:var(--font-display);
+    font-size:16px;
+  }
+  .preview strong.pos{color:var(--green)}
+  .preview strong.neg{color:var(--red)}
+
+  .btn-add{
+    width:100%;
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    padding:13px;
+    border-radius:11px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+  }
+  .btn-add:active{transform:scale(0.99)}
+
+  /* History */
+  .hist-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .hist-head h2{margin:0;}
+  .clear-link{
+    font-size:11.5px;
+    color:var(--muted);
+    background:none;
+    border:none;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+
+  .entry{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    gap:10px;
+  }
+  .entry:last-child{border-bottom:none;}
+  .entry-left{min-width:0;}
+  .entry-stock{
+    font-weight:700;
+    font-size:14px;
+    color:var(--text);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .entry-meta{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .entry-right{
+    text-align:right;
+    flex-shrink:0;
+  }
+  .entry-pnl{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:14.5px;
+  }
+  .entry-pnl.pos{color:var(--green)}
+  .entry-pnl.neg{color:var(--red)}
+  .entry-date{
+    font-size:10.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .del-btn{
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-size:16px;
+    padding:2px 6px;
+    cursor:pointer;
+    line-height:1;
+  }
+  .empty{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:24px 0;
+  }
+
+  .badge{
+    display:inline-block;
+    font-size:9.5px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:6px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+  .badge.long{background:#E7EEFF; color:var(--blue);}
+  .badge.short{background:#FFE9DA; color:var(--orange);}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--muted);
+    padding:18px 16px 6px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-row">
+    <div class="logo">Mi</div>
+    <div class="brand-text">
+      <h1>PaperLog</h1>
+      <p>Marak Innovation · Paper Trading Journal</p>
+    </div>
+    <button id="installBtn">⬇ Install</button>
+  </div>
+
+  <div class="summary">
+    <div class="sum-card"><div class="val" id="sumNet">₹0</div><div class="lbl">Net P&L</div></div>
+    <div class="sum-card"><div class="val" id="sumTrades">0</div><div class="lbl">Trades</div></div>
+    <div class="sum-card"><div class="val pos" id="sumProfitDays">0</div><div class="lbl">Profit Days</div></div>
+    <div class="sum-card"><div class="val neg" id="sumLossDays">0</div><div class="lbl">Loss Days</div></div>
+  </div>
+</header>
+
+<main>
+
+  <div class="panel">
+    <h2>New Trade</h2>
+
+    <div class="type-toggle">
+      <button id="typeLongBtn" class="active">Buy First (Long)</button>
+      <button id="typeShortBtn">Sell First (Short)</button>
+    </div>
+
+    <div class="field">
+      <label>NSE Stock Name</label>
+      <input type="text" id="stockInput" placeholder="e.g. RELIANCE, TCS, INFY" autocomplete="off">
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label id="priceALabel">Buy Price</label>
+        <input type="number" id="priceAInput" placeholder="₹0.00" step="0.05" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label id="priceBLabel">Sell Price</label>
+        <input type="number" id="priceBInput" placeholder="₹0.00" step="0.05" inputmode="decimal">
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Quantity</label>
+        <input type="number" id="qtyInput" placeholder="1" value="1" min="1" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="dateInput">
+      </div>
+    </div>
+
+    <div class="preview">
+      <span>Estimated P&L</span>
+      <strong id="previewPnl">₹0.00</strong>
+    </div>
+
+    <button class="btn-add" id="addBtn">Add Trade</button>
+  </div>
+
+  <div class="panel">
+    <div class="hist-head">
+      <h2>Trade History</h2>
+      <button class="clear-link" id="clearBtn">Clear all</button>
+    </div>
+    <div id="historyList"></div>
+  </div>
+
+</main>
+
+<footer>PaperLog by Marak Innovation — demo / practice tool, not investment advice.</footer>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'paperlog_trades_v1';
+  let trades = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  let tradeType = 'long'; // long = buy first, short = sell first
+
+  const stockInput = document.getElementById('stockInput');
+  const priceAInput = document.getElementById('priceAInput');
+  const priceBInput = document.getElementById('priceBInput');
+  const priceALabel = document.getElementById('priceALabel');
+  const priceBLabel = document.getElementById('priceBLabel');
+  const qtyInput = document.getElementById('qtyInput');
+  const dateInput = document.getElementById('dateInput');
+  const previewPnl = document.getElementById('previewPnl');
+  const addBtn = document.getElementById('addBtn');
+  const historyList = document.getElementById('historyList');
+  const clearBtn = document.getElementById('clearBtn');
+  const typeLongBtn = document.getElementById('typeLongBtn');
+  const typeShortBtn = document.getElementById('typeShortBtn');
+
+  // default date = today
+  dateInput.value = new Date().toISOString().split('T')[0];
+
+  function fmtINR(n){
+    const sign = n < 0 ? '-' : '';
+    return sign + '₹' + Math.abs(n).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function setType(type){
+    tradeType = type;
+    if(type === 'long'){
+      typeLongBtn.classList.add('active');
+      typeShortBtn.classList.remove('active');
+      priceALabel.textContent = 'Buy Price';
+      priceBLabel.textContent = 'Sell Price';
+    } else {
+      typeShortBtn.classList.add('active');
+      typeLongBtn.classList.remove('active');
+      priceALabel.textContent = 'Sell Price';
+      priceBLabel.textContent = 'Buy Price';
+    }
+    updatePreview();
+  }
+  typeLongBtn.addEventListener('click', () => setType('long'));
+  typeShortBtn.addEventListener('click', () => setType('short'));
+
+  function calcPnl(a, b, qty, type){
+    // a = first price entered, b = second price entered
+    if(type === 'long'){
+      // a = buy, b = sell
+      return (b - a) * qty;
+    } else {
+      // a = sell, b = buy (short trade)
+      return (a - b) * qty;
+    }
+  }
+
+  function updatePreview(){
+    const a = parseFloat(priceAInput.value) || 0;
+    const b = parseFloat(priceBInput.value) || 0;
+    const qty = parseFloat(qtyInput.value) || 1;
+    const pnl = calcPnl(a, b, qty, tradeType);
+    previewPnl.textContent = fmtINR(pnl);
+    previewPnl.className = pnl > 0 ? 'pos' : (pnl < 0 ? 'neg' : '');
+  }
+  [priceAInput, priceBInput, qtyInput].forEach(el => el.addEventListener('input', updatePreview));
+
+  function addTrade(){
+    const stock = stockInput.value.trim().toUpperCase();
+    const a = parseFloat(priceAInput.value);
+    const b = parseFloat(priceBInput.value);
+    const qty = parseFloat(qtyInput.value) || 1;
+    const date = dateInput.value || new Date().toISOString().split('T')[0];
+
+    if(!stock){ stockInput.focus(); return; }
+    if(isNaN(a) || isNaN(b)){ (isNaN(a) ? priceAInput : priceBInput).focus(); return; }
+
+    const pnl = calcPnl(a, b, qty, tradeType);
+    const buyPrice = tradeType === 'long' ? a : b;
+    const sellPrice = tradeType === 'long' ? b : a;
+
+    trades.unshift({
+      id: Date.now(),
+      stock, buyPrice, sellPrice, qty, date,
+      type: tradeType, pnl
+    });
+
+    save();
+    render();
+
+    stockInput.value = '';
+    priceAInput.value = '';
+    priceBInput.value = '';
+    qtyInput.value = '1';
+    updatePreview();
+    stockInput.focus();
+  }
+  addBtn.addEventListener('click', addTrade);
+
+  function deleteTrade(id){
+    trades = trades.filter(t => t.id !== id);
+    save();
+    render();
+  }
+
+  function clearAll(){
+    if(trades.length === 0) return;
+    if(confirm('Delete all trade history? This cannot be undone.')){
+      trades = [];
+      save();
+      render();
+    }
+  }
+  clearBtn.addEventListener('click', clearAll);
+
+  function save(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(trades));
+  }
+
+  function render(){
+    // Summary
+    const net = trades.reduce((s,t) => s + t.pnl, 0);
+    const sumNet = document.getElementById('sumNet');
+    sumNet.textContent = fmtINR(net);
+    sumNet.className = 'val ' + (net > 0 ? 'pos' : (net < 0 ? 'neg' : ''));
+    document.getElementById('sumTrades').textContent = trades.length;
+
+    // Group by date for profit/loss day count
+    const byDate = {};
+    trades.forEach(t => {
+      byDate[t.date] = (byDate[t.date] || 0) + t.pnl;
+    });
+    let profitDays = 0, lossDays = 0;
+    Object.values(byDate).forEach(v => {
+      if(v > 0) profitDays++;
+      else if(v < 0) lossDays++;
+    });
+    document.getElementById('sumProfitDays').textContent = profitDays;
+    document.getElementById('sumLossDays').textContent = lossDays;
+
+    // History list
+    if(trades.length === 0){
+      historyList.innerHTML = '<div class="empty">No trades logged yet. Add your first one above.</div>';
+      return;
+    }
+
+    historyList.innerHTML = trades.map(t => {
+      const pnlClass = t.pnl > 0 ? 'pos' : (t.pnl < 0 ? 'neg' : '');
+      const badgeClass = t.type === 'long' ? 'long' : 'short';
+      const badgeText = t.type === 'long' ? 'LONG' : 'SHORT';
+      const dateFmt = new Date(t.date + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric', month:'short'});
+      return `
+        <div class="entry">
+          <div class="entry-left">
+            <div class="entry-stock">${t.stock}<span class="badge ${badgeClass}">${badgeText}</span></div>
+            <div class="entry-meta">Buy ${fmtINR(t.buyPrice)} → Sell ${fmtINR(t.sellPrice)} × ${t.qty}</div>
+          </div>
+          <div class="entry-right">
+            <div class="entry-pnl ${pnlClass}">${fmtINR(t.pnl)}</div>
+            <div class="entry-date">${dateFmt}</div>
+          </div>
+          <button class="del-btn" onclick="window.__deleteTrade(${t.id})">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+  window.__deleteTrade = deleteTrade;
+
+  // ---- PWA install ----
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.classList.add('show');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.classList.remove('show');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installBtn.classList.remove('show');
+  });
+
+  // ---- Manifest + Service Worker (Blob-based, single-file) ----
+  const manifest = {
+    name: "PaperLog — Mi Trading Journal",
+    short_name: "PaperLog",
+    description: "Paper trading P&L journal by Marak Innovation",
+    start_url: ".",
+    display: "standalone",
+    background_color: "#F5F7FB",
+    theme_color: "#0B1E3F",
+    icons: [
+      {
+        src: "data:image/svg+xml," + encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2E5EFF"/>
+                <stop offset="100%" stop-color="#FF7A29"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="512" rx="112" fill="#0B1E3F"/>
+            <rect x="40" y="40" width="432" height="432" rx="88" fill="url(#g)"/>
+            <text x="256" y="330" font-family="Poppins, sans-serif" font-weight="800" font-size="240" fill="#ffffff" text-anchor="middle">Mi</text>
+          </svg>
+        `),
+        sizes: "512x512",
+        type: "image/svg+xml",
+        purpose: "any maskable"
+      }
+    ]
+  };
+  const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const manifestURL = URL.createObjectURL(manifestBlob);
+  const manifestLink = document.createElement('link');
+  manifestLink.rel = 'manifest';
+  manifestLink.href = manifestURL;
+  document.head.appendChild(manifestLink);
+
+  // favicon using same Mi mark
+  const faviconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0B1E3F"/><rect x="5" y="5" width="54" height="54" rx="11" fill="#2E5EFF"/><text x="32" y="42" font-family="Poppins, sans-serif" font-weight="800" font-size="30" fill="#fff" text-anchor="middle">Mi</text></svg>`;
+  const faviconLink = document.createElement('link');
+  faviconLink.rel = 'icon';
+  faviconLink.type = 'image/svg+xml';
+  faviconLink.href = 'data:image/svg+xml,' + encodeURIComponent(faviconSVG);
+  document.head.appendChild(faviconLink);
+
+  if('serviceWorker' in navigator){
+    const swCode = `
+      const CACHE = 'paperlog-v1';
+      self.addEventListener('install', e => self.skipWaiting());
+      self.addEventListener('activate', e => self.clients.claim());
+      self.addEventListener('fetch', e => {
+        e.respondWith(
+          fetch(e.request).catch(() => caches.match(e.request))
+        );
+      });
+    `;
+    const swBlob = new Blob([swCode], {type:'application/javascript'});
+    const swURL = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swURL).catch(()=>{});
+  }
+
+  render();
+  updatePreview();
+})();
+</script>
+</body>
+</html>
