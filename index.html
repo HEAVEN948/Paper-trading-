@@ -33,7 +33,6 @@
   }
   a{color:inherit}
 
-  /* Header */
   header{
     background:linear-gradient(160deg,var(--navy) 0%, var(--navy-deep) 100%);
     color:#fff;
@@ -97,7 +96,6 @@
   #installBtn.show{display:inline-flex}
   #installBtn:active{transform:scale(0.97)}
 
-  /* Summary strip */
   .summary{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -118,16 +116,16 @@
     font-weight:700;
   }
   .sum-card .lbl{
-    font-size:9.5px;
+    font-size:9px;
     color:rgba(255,255,255,0.6);
     margin-top:2px;
     text-transform:uppercase;
-    letter-spacing:0.4px;
+    letter-spacing:0.3px;
   }
   .val.pos{color:#5FE3A1}
   .val.neg{color:#FF8B8E}
+  .val.amber{color:#FFC875}
 
-  /* Main */
   main{
     max-width:520px;
     margin:0 auto;
@@ -151,6 +149,14 @@
     display:flex;
     align-items:center;
     gap:6px;
+  }
+  .panel h2 .count{
+    background:var(--cream);
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
   }
 
   .type-toggle{
@@ -204,24 +210,6 @@
   }
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
 
-  .preview{
-    background:var(--cream);
-    border-radius:10px;
-    padding:11px 13px;
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-  .preview strong{
-    font-family:var(--font-display);
-    font-size:16px;
-  }
-  .preview strong.pos{color:var(--green)}
-  .preview strong.neg{color:var(--red)}
-
   .btn-add{
     width:100%;
     background:var(--blue);
@@ -236,14 +224,6 @@
   }
   .btn-add:active{transform:scale(0.99)}
 
-  /* History */
-  .hist-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:14px;
-  }
-  .hist-head h2{margin:0;}
   .clear-link{
     font-size:11.5px;
     color:var(--muted);
@@ -251,6 +231,71 @@
     border:none;
     text-decoration:underline;
     cursor:pointer;
+  }
+  .hist-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .hist-head h2{margin:0;}
+
+  .open-entry{
+    border:1.5px dashed var(--orange);
+    background:#FFF8F2;
+    border-radius:12px;
+    padding:13px;
+    margin-bottom:10px;
+  }
+  .open-entry:last-child{margin-bottom:0;}
+  .open-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:10px;
+  }
+  .open-stock{
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--text);
+  }
+  .open-meta{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .del-btn{
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-size:16px;
+    padding:2px 4px;
+    cursor:pointer;
+    line-height:1;
+  }
+  .close-row{
+    display:flex;
+    gap:8px;
+  }
+  .close-row input{
+    flex:1;
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    padding:9px 10px;
+    font-size:14px;
+    font-family:var(--font-body);
+  }
+  .close-row input:focus{outline:none; border-color:var(--blue);}
+  .close-row button{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 14px;
+    border-radius:9px;
+    font-weight:700;
+    font-size:12.5px;
+    cursor:pointer;
+    white-space:nowrap;
   }
 
   .entry{
@@ -292,21 +337,6 @@
     color:var(--muted);
     margin-top:2px;
   }
-  .del-btn{
-    background:none;
-    border:none;
-    color:var(--muted);
-    font-size:16px;
-    padding:2px 6px;
-    cursor:pointer;
-    line-height:1;
-  }
-  .empty{
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-    padding:24px 0;
-  }
 
   .badge{
     display:inline-block;
@@ -321,6 +351,37 @@
   }
   .badge.long{background:#E7EEFF; color:var(--blue);}
   .badge.short{background:#FFE9DA; color:var(--orange);}
+
+  .empty{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:20px 0;
+  }
+
+  .month-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .month-row:last-child{border-bottom:none;}
+  .month-name{
+    font-weight:700;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  .month-sub{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .month-pnl{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:15px;
+  }
 
   footer{
     text-align:center;
@@ -344,7 +405,7 @@
 
   <div class="summary">
     <div class="sum-card"><div class="val" id="sumNet">₹0</div><div class="lbl">Net P&L</div></div>
-    <div class="sum-card"><div class="val" id="sumTrades">0</div><div class="lbl">Trades</div></div>
+    <div class="sum-card"><div class="val amber" id="sumOpen">0</div><div class="lbl">Open</div></div>
     <div class="sum-card"><div class="val pos" id="sumProfitDays">0</div><div class="lbl">Profit Days</div></div>
     <div class="sum-card"><div class="val neg" id="sumLossDays">0</div><div class="lbl">Loss Days</div></div>
   </div>
@@ -353,11 +414,11 @@
 <main>
 
   <div class="panel">
-    <h2>New Trade</h2>
+    <h2>New Position</h2>
 
     <div class="type-toggle">
-      <button id="typeLongBtn" class="active">Buy First (Long)</button>
-      <button id="typeShortBtn">Sell First (Short)</button>
+      <button id="typeLongBtn" class="active">Buying Now (Long)</button>
+      <button id="typeShortBtn">Selling Now (Short)</button>
     </div>
 
     <div class="field">
@@ -367,37 +428,36 @@
 
     <div class="row2">
       <div class="field">
-        <label id="priceALabel">Buy Price</label>
-        <input type="number" id="priceAInput" placeholder="₹0.00" step="0.05" inputmode="decimal">
+        <label id="priceLabel">Buy Price</label>
+        <input type="number" id="priceInput" placeholder="₹0.00" step="0.05" inputmode="decimal">
       </div>
-      <div class="field">
-        <label id="priceBLabel">Sell Price</label>
-        <input type="number" id="priceBInput" placeholder="₹0.00" step="0.05" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="row2">
       <div class="field">
         <label>Quantity</label>
         <input type="number" id="qtyInput" placeholder="1" value="1" min="1" inputmode="numeric">
       </div>
-      <div class="field">
-        <label>Date</label>
-        <input type="date" id="dateInput">
-      </div>
     </div>
 
-    <div class="preview">
-      <span>Estimated P&L</span>
-      <strong id="previewPnl">₹0.00</strong>
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="dateInput">
     </div>
 
-    <button class="btn-add" id="addBtn">Add Trade</button>
+    <button class="btn-add" id="addBtn">Save Position — Exit Price Later</button>
+  </div>
+
+  <div class="panel" id="openPanel">
+    <h2>Open Positions <span class="count" id="openCount">0</span></h2>
+    <div id="openList"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Monthly Statement</h2>
+    <div id="monthList"></div>
   </div>
 
   <div class="panel">
     <div class="hist-head">
-      <h2>Trade History</h2>
+      <h2>Closed Trades</h2>
       <button class="clear-link" id="clearBtn">Clear all</button>
     </div>
     <div id="historyList"></div>
@@ -409,113 +469,110 @@
 
 <script>
 (function(){
-  const STORAGE_KEY = 'paperlog_trades_v1';
-  let trades = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  let tradeType = 'long'; // long = buy first, short = sell first
+  const STORAGE_KEY = 'paperlog_positions_v2';
+  let positions = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  let entryType = 'long';
 
   const stockInput = document.getElementById('stockInput');
-  const priceAInput = document.getElementById('priceAInput');
-  const priceBInput = document.getElementById('priceBInput');
-  const priceALabel = document.getElementById('priceALabel');
-  const priceBLabel = document.getElementById('priceBLabel');
+  const priceInput = document.getElementById('priceInput');
+  const priceLabel = document.getElementById('priceLabel');
   const qtyInput = document.getElementById('qtyInput');
   const dateInput = document.getElementById('dateInput');
-  const previewPnl = document.getElementById('previewPnl');
   const addBtn = document.getElementById('addBtn');
+  const openList = document.getElementById('openList');
+  const openCount = document.getElementById('openCount');
   const historyList = document.getElementById('historyList');
+  const monthList = document.getElementById('monthList');
   const clearBtn = document.getElementById('clearBtn');
   const typeLongBtn = document.getElementById('typeLongBtn');
   const typeShortBtn = document.getElementById('typeShortBtn');
 
-  // default date = today
   dateInput.value = new Date().toISOString().split('T')[0];
 
   function fmtINR(n){
     const sign = n < 0 ? '-' : '';
     return sign + '₹' + Math.abs(n).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
   }
+  function fmtDate(d){
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric', month:'short'});
+  }
+  function monthKey(d){
+    const dt = new Date(d + 'T00:00:00');
+    return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0');
+  }
+  function monthName(key){
+    const [y,m] = key.split('-');
+    return new Date(y, m-1, 1).toLocaleDateString('en-IN', {month:'long', year:'numeric'});
+  }
 
   function setType(type){
-    tradeType = type;
+    entryType = type;
     if(type === 'long'){
       typeLongBtn.classList.add('active');
       typeShortBtn.classList.remove('active');
-      priceALabel.textContent = 'Buy Price';
-      priceBLabel.textContent = 'Sell Price';
+      priceLabel.textContent = 'Buy Price';
     } else {
       typeShortBtn.classList.add('active');
       typeLongBtn.classList.remove('active');
-      priceALabel.textContent = 'Sell Price';
-      priceBLabel.textContent = 'Buy Price';
+      priceLabel.textContent = 'Sell Price';
     }
-    updatePreview();
   }
   typeLongBtn.addEventListener('click', () => setType('long'));
   typeShortBtn.addEventListener('click', () => setType('short'));
 
-  function calcPnl(a, b, qty, type){
-    // a = first price entered, b = second price entered
-    if(type === 'long'){
-      // a = buy, b = sell
-      return (b - a) * qty;
-    } else {
-      // a = sell, b = buy (short trade)
-      return (a - b) * qty;
-    }
-  }
-
-  function updatePreview(){
-    const a = parseFloat(priceAInput.value) || 0;
-    const b = parseFloat(priceBInput.value) || 0;
-    const qty = parseFloat(qtyInput.value) || 1;
-    const pnl = calcPnl(a, b, qty, tradeType);
-    previewPnl.textContent = fmtINR(pnl);
-    previewPnl.className = pnl > 0 ? 'pos' : (pnl < 0 ? 'neg' : '');
-  }
-  [priceAInput, priceBInput, qtyInput].forEach(el => el.addEventListener('input', updatePreview));
-
-  function addTrade(){
+  function addPosition(){
     const stock = stockInput.value.trim().toUpperCase();
-    const a = parseFloat(priceAInput.value);
-    const b = parseFloat(priceBInput.value);
+    const price = parseFloat(priceInput.value);
     const qty = parseFloat(qtyInput.value) || 1;
     const date = dateInput.value || new Date().toISOString().split('T')[0];
 
     if(!stock){ stockInput.focus(); return; }
-    if(isNaN(a) || isNaN(b)){ (isNaN(a) ? priceAInput : priceBInput).focus(); return; }
+    if(isNaN(price)){ priceInput.focus(); return; }
 
-    const pnl = calcPnl(a, b, qty, tradeType);
-    const buyPrice = tradeType === 'long' ? a : b;
-    const sellPrice = tradeType === 'long' ? b : a;
-
-    trades.unshift({
+    positions.unshift({
       id: Date.now(),
-      stock, buyPrice, sellPrice, qty, date,
-      type: tradeType, pnl
+      stock, qty,
+      type: entryType,
+      entryPrice: price,
+      entryDate: date,
+      exitPrice: null,
+      exitDate: null,
+      pnl: null
     });
 
     save();
     render();
 
     stockInput.value = '';
-    priceAInput.value = '';
-    priceBInput.value = '';
+    priceInput.value = '';
     qtyInput.value = '1';
-    updatePreview();
     stockInput.focus();
   }
-  addBtn.addEventListener('click', addTrade);
+  addBtn.addEventListener('click', addPosition);
 
-  function deleteTrade(id){
-    trades = trades.filter(t => t.id !== id);
+  function closePosition(id, exitPrice, exitDate){
+    const pos = positions.find(p => p.id === id);
+    if(!pos) return;
+    if(isNaN(exitPrice)) return;
+    pos.exitPrice = exitPrice;
+    pos.exitDate = exitDate || new Date().toISOString().split('T')[0];
+    pos.pnl = pos.type === 'long'
+      ? (pos.exitPrice - pos.entryPrice) * pos.qty
+      : (pos.entryPrice - pos.exitPrice) * pos.qty;
+    save();
+    render();
+  }
+
+  function deletePosition(id){
+    positions = positions.filter(p => p.id !== id);
     save();
     render();
   }
 
   function clearAll(){
-    if(trades.length === 0) return;
-    if(confirm('Delete all trade history? This cannot be undone.')){
-      trades = [];
+    if(positions.length === 0) return;
+    if(confirm('Delete all trade history (open and closed)? This cannot be undone.')){
+      positions = [];
       save();
       render();
     }
@@ -523,59 +580,111 @@
   clearBtn.addEventListener('click', clearAll);
 
   function save(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(trades));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
   }
 
   function render(){
-    // Summary
-    const net = trades.reduce((s,t) => s + t.pnl, 0);
+    const open = positions.filter(p => p.pnl === null);
+    const closed = positions.filter(p => p.pnl !== null);
+
+    const net = closed.reduce((s,t) => s + t.pnl, 0);
     const sumNet = document.getElementById('sumNet');
     sumNet.textContent = fmtINR(net);
     sumNet.className = 'val ' + (net > 0 ? 'pos' : (net < 0 ? 'neg' : ''));
-    document.getElementById('sumTrades').textContent = trades.length;
+    document.getElementById('sumOpen').textContent = open.length;
 
-    // Group by date for profit/loss day count
     const byDate = {};
-    trades.forEach(t => {
-      byDate[t.date] = (byDate[t.date] || 0) + t.pnl;
-    });
+    closed.forEach(t => { byDate[t.exitDate] = (byDate[t.exitDate] || 0) + t.pnl; });
     let profitDays = 0, lossDays = 0;
-    Object.values(byDate).forEach(v => {
-      if(v > 0) profitDays++;
-      else if(v < 0) lossDays++;
-    });
+    Object.values(byDate).forEach(v => { if(v > 0) profitDays++; else if(v < 0) lossDays++; });
     document.getElementById('sumProfitDays').textContent = profitDays;
     document.getElementById('sumLossDays').textContent = lossDays;
 
-    // History list
-    if(trades.length === 0){
-      historyList.innerHTML = '<div class="empty">No trades logged yet. Add your first one above.</div>';
-      return;
+    openCount.textContent = open.length;
+    if(open.length === 0){
+      openList.innerHTML = '<div class="empty">No open positions. Add one above — fill the exit price whenever you\'re ready.</div>';
+    } else {
+      openList.innerHTML = open.map(p => {
+        const badgeClass = p.type === 'long' ? 'long' : 'short';
+        const badgeText = p.type === 'long' ? 'LONG' : 'SHORT';
+        const entryLabel = p.type === 'long' ? 'Bought' : 'Sold';
+        const exitLabel = p.type === 'long' ? 'Sell Price' : 'Buy Price';
+        return `
+          <div class="open-entry">
+            <div class="open-top">
+              <div>
+                <div class="open-stock">${p.stock}<span class="badge ${badgeClass}">${badgeText}</span></div>
+                <div class="open-meta">${entryLabel} ${fmtINR(p.entryPrice)} × ${p.qty} · ${fmtDate(p.entryDate)}</div>
+              </div>
+              <button class="del-btn" onclick="window.__deletePos(${p.id})">✕</button>
+            </div>
+            <div class="close-row">
+              <input type="number" placeholder="${exitLabel}" step="0.05" inputmode="decimal" id="exitPrice-${p.id}">
+              <button onclick="window.__closePos(${p.id})">Close</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    historyList.innerHTML = trades.map(t => {
-      const pnlClass = t.pnl > 0 ? 'pos' : (t.pnl < 0 ? 'neg' : '');
-      const badgeClass = t.type === 'long' ? 'long' : 'short';
-      const badgeText = t.type === 'long' ? 'LONG' : 'SHORT';
-      const dateFmt = new Date(t.date + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric', month:'short'});
-      return `
-        <div class="entry">
-          <div class="entry-left">
-            <div class="entry-stock">${t.stock}<span class="badge ${badgeClass}">${badgeText}</span></div>
-            <div class="entry-meta">Buy ${fmtINR(t.buyPrice)} → Sell ${fmtINR(t.sellPrice)} × ${t.qty}</div>
+    if(closed.length === 0){
+      historyList.innerHTML = '<div class="empty">No closed trades yet.</div>';
+    } else {
+      historyList.innerHTML = closed.slice().sort((a,b) => new Date(b.exitDate) - new Date(a.exitDate)).map(t => {
+        const pnlClass = t.pnl > 0 ? 'pos' : (t.pnl < 0 ? 'neg' : '');
+        const badgeClass = t.type === 'long' ? 'long' : 'short';
+        const badgeText = t.type === 'long' ? 'LONG' : 'SHORT';
+        return `
+          <div class="entry">
+            <div class="entry-left">
+              <div class="entry-stock">${t.stock}<span class="badge ${badgeClass}">${badgeText}</span></div>
+              <div class="entry-meta">${fmtINR(t.entryPrice)} → ${fmtINR(t.exitPrice)} × ${t.qty}</div>
+            </div>
+            <div class="entry-right">
+              <div class="entry-pnl ${pnlClass}">${fmtINR(t.pnl)}</div>
+              <div class="entry-date">${fmtDate(t.entryDate)} → ${fmtDate(t.exitDate)}</div>
+            </div>
+            <button class="del-btn" onclick="window.__deletePos(${t.id})">✕</button>
           </div>
-          <div class="entry-right">
-            <div class="entry-pnl ${pnlClass}">${fmtINR(t.pnl)}</div>
-            <div class="entry-date">${dateFmt}</div>
-          </div>
-          <button class="del-btn" onclick="window.__deleteTrade(${t.id})">✕</button>
-        </div>
-      `;
-    }).join('');
-  }
-  window.__deleteTrade = deleteTrade;
+        `;
+      }).join('');
+    }
 
-  // ---- PWA install ----
+    const byMonth = {};
+    closed.forEach(t => {
+      const key = monthKey(t.exitDate);
+      if(!byMonth[key]) byMonth[key] = {pnl:0, trades:0};
+      byMonth[key].pnl += t.pnl;
+      byMonth[key].trades += 1;
+    });
+    const monthKeys = Object.keys(byMonth).sort().reverse();
+    if(monthKeys.length === 0){
+      monthList.innerHTML = '<div class="empty">Statement fills in once you close your first trade.</div>';
+    } else {
+      monthList.innerHTML = monthKeys.map(key => {
+        const m = byMonth[key];
+        const pnlClass = m.pnl > 0 ? 'pos' : (m.pnl < 0 ? 'neg' : '');
+        return `
+          <div class="month-row">
+            <div>
+              <div class="month-name">${monthName(key)}</div>
+              <div class="month-sub">${m.trades} trade${m.trades === 1 ? '' : 's'} closed</div>
+            </div>
+            <div class="month-pnl ${pnlClass}">${fmtINR(m.pnl)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  window.__deletePos = deletePosition;
+  window.__closePos = function(id){
+    const input = document.getElementById('exitPrice-' + id);
+    const exitPrice = parseFloat(input.value);
+    if(isNaN(exitPrice)){ input.focus(); return; }
+    closePosition(id, exitPrice, new Date().toISOString().split('T')[0]);
+  };
+
   let deferredPrompt;
   const installBtn = document.getElementById('installBtn');
 
@@ -597,7 +706,6 @@
     installBtn.classList.remove('show');
   });
 
-  // ---- Manifest + Service Worker (Blob-based, single-file) ----
   const manifest = {
     name: "PaperLog — Mi Trading Journal",
     short_name: "PaperLog",
@@ -634,7 +742,6 @@
   manifestLink.href = manifestURL;
   document.head.appendChild(manifestLink);
 
-  // favicon using same Mi mark
   const faviconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0B1E3F"/><rect x="5" y="5" width="54" height="54" rx="11" fill="#2E5EFF"/><text x="32" y="42" font-family="Poppins, sans-serif" font-weight="800" font-size="30" fill="#fff" text-anchor="middle">Mi</text></svg>`;
   const faviconLink = document.createElement('link');
   faviconLink.rel = 'icon';
@@ -644,7 +751,7 @@
 
   if('serviceWorker' in navigator){
     const swCode = `
-      const CACHE = 'paperlog-v1';
+      const CACHE = 'paperlog-v2';
       self.addEventListener('install', e => self.skipWaiting());
       self.addEventListener('activate', e => self.clients.claim());
       self.addEventListener('fetch', e => {
@@ -659,7 +766,6 @@
   }
 
   render();
-  updatePreview();
 })();
 </script>
 </body>
